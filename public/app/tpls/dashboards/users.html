@@ -1,0 +1,55 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">App Users</h3>				
+			</div>
+			<div class="panel-body" ng-controller="UserCtrl">
+
+				<script type="text/javascript">
+					jQuery(document).ready(function($)
+					{
+						$("#users-table").dataTable({
+							dom: "t" + "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+							aoColumns: [
+								null,
+								null,								
+								null,
+								null,
+								null
+							],
+						});
+						
+					});
+				</script>
+				
+				<table class="table table-bordered table-striped" id="users-table">
+					<thead>
+						<tr>			
+							<th>No</th>				
+							<th>Name</th>
+							<th>Country</th>
+							<th>City</th>
+							<th>Balance</th>
+						</tr>
+					</thead>
+					
+					<tbody class="middle-align">
+						
+						<tr ng-repeat="user in users_list track by $index">
+							<td>{{$index+1}}</td>
+							<td>{{user.name}}</td>
+							<td>{{user.country}}</td>								
+							<td>{{user.city}}</td>
+							<td>{{user.balance}}$</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Age Verification</h3>				
+			</div>
+			<div class="panel-body" ng-controller="VerifyCtrl">
+
+				<script type="text/javascript">
+					jQuery(document).ready(function($)
+					{
+						$("#verify-table").dataTable({
+							dom: "t" + "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+							aoColumns: [
+								null,								
+								{bSortable: false},
+								{bSortable: false},
+								{bSortable: false}
+							],
+						});
+						
+					});
+				</script>
+				
+				<table class="table table-bordered table-striped" id="verify-table">
+					<thead>
+						<tr>							
+							<th>Name</th>
+							<th>Picture</th>
+							<th>Details</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					
+					<tbody class="middle-align">
+						
+						<tr ng-repeat="item in requests_list track by $index">
+							<td>{{item.name}}</td>
+							<td><img src="https://s3.amazonaws.com/puntrappbucket/photo/{{item.picture}}"  height=140/></td>
+							<td>
+								<table class="table table-striped">
+									
+									<tbody>
+										<tr>
+											<td>birthday</td>
+											<td>{{item.detail.birthday}}</td>
+										</tr>										
+										<tr>
+											<td>address</td>
+											<td>{{item.detail.address}}</td>
+										</tr>
+										<tr>
+											<td>city</td>
+											<td>{{item.detail.city}}</td>
+										</tr>
+										<tr>
+											<td>country</td>
+											<td>{{item.detail.country}}</td>
+										</tr>
+										<tr>
+											<td>postal code</td>
+											<td>{{item.detail.postalcode}}</td>
+										</tr>
+										<tr>
+											<td>phone no</td>
+											<td>{{item.detail.phone}}</td>
+										</tr>
+										<tr>
+											<td>email</td>
+											<td>{{item.detail.email}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td>
+									<label>
+										<input type="radio" name="radio-{{$index}}" class="cbr cbr-success" ng-model="item.status" value=1 ng-change='newValue(item._id, item.status)'>
+										Verify
+									</label>
+									<br/>
+									<label>
+										<input type="radio" name="radio-{{$index}}" class="cbr cbr-warning" ng-model="item.status" value=2 ng-change='newValue(item._id, item.status)'>
+										Resubmit
+									</label>
+									<br/>
+									<label>
+										<input type="radio" name="radio-{{$index}}" class="cbr cbr-danger" ng-model="item.status" value=3 ng-change='newValue(item._id, item.status)'>
+										Deny
+									</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

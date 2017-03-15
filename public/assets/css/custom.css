@@ -1,0 +1,39 @@
+/**
+ *
+ * Apply your custom CSS here
+ *
+*/
+
+body {	
+}
+
+a {
+}
+
+.home-container {
+	position: fixed;
+	width: 50%;
+	top: 50%;
+	left: 25%;
+	margin-top: -16px;
+}
+
+.label-date-from {
+	float: left;
+	margin-right: 20px;	
+}
+
+.input-date-from {
+	float: left !important;
+	margin-right: 100px;
+}
+
+.signin-form {
+	margin: 0px auto;
+	float: none !important;
+}
+
+.navbar-nav.log-out {
+	float: right;
+	margin-right: 3% !important;
+}

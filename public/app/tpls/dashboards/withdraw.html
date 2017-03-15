@@ -1,0 +1,99 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Withdraw Requests</h3>				
+			</div>
+			<div class="panel-body" ng-controller="WithdrawCtrl">
+
+				<script type="text/javascript">
+					jQuery(document).ready(function($)
+					{
+						$("#withdraw-table").dataTable({
+							dom: "t" + "<'row'<'col-xs-6'i><'col-xs-6'p>>",
+							aoColumns: [
+								null,								
+								null,
+								null,
+								{bSortable: false},
+								null,
+								null,
+								null,
+								{bSortable: false}
+							],
+						});
+						
+					});
+				</script>
+				
+				<table class="table table-bordered table-striped" id="withdraw-table">
+					<thead>
+						<tr>							
+							<th>Name</th>
+							<th>Amount</th>
+							<th>Email</th>
+							<th>More Details</th>
+							<th>Date</th>
+							<th>Account Balance</th>
+							<th>Amount Total Won</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					
+					<tbody class="middle-align" ng-repeat="item in requests_list">
+						
+						<tr ng-repeat="request in item.withdraw_requests track by $index">
+							<td>{{item.name}}</td>
+							<td>{{request.withdraw_amount}}</td>
+							<td>{{item.detail.email}}</td>
+							<td>
+								<table class="table table-striped">
+									
+									<tbody>
+										<tr>
+											<td>birthday</td>
+											<td>{{item.detail.birthday}}</td>
+										</tr>										
+										<tr>
+											<td>address</td>
+											<td>{{item.detail.address}}</td>
+										</tr>
+										<tr>
+											<td>city</td>
+											<td>{{item.detail.city}}</td>
+										</tr>
+										<tr>
+											<td>country</td>
+											<td>{{item.detail.country}}</td>
+										</tr>
+										<tr>
+											<td>postal code</td>
+											<td>{{item.detail.postalcode}}</td>
+										</tr>
+										<tr>
+											<td>phone no</td>
+											<td>{{item.detail.phone}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+							<td>{{request.withdraw_date}}</td>
+							<td>{{request.balance}}</td>
+							<td>{{request.total_won}}</td>							
+							<td>
+								<label>
+									<input type="checkbox" class="cbr" ng-model="request.withdraw_process" ng-change='newValue(item._id, request.withdraw_process, $index)'>
+									Mark as processed
+								</label>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

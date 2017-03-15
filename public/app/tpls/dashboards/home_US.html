@@ -1,0 +1,156 @@
+<div class="row">
+	<div class="col-sm-12">
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Input League Data</h3>				
+			</div>
+			<div class="panel-body" ng-controller="HomeUSCtrl as vm">
+
+				<form role="form" class="form-horizontal" role="form">
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Select League</label>
+
+						<div class="col-sm-10">
+							<select class="form-control" ng-change="change_league()" ng-model="selected_league">
+								<option value="1">League 1</option>
+								<option value="2">League 2</option>
+								<option value="3">League 3</option>
+								<option value="4">League 4</option>
+								<option value="5">League 5</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-1">Name</label>
+
+						<div class="col-sm-10">
+							<input type="text" readonly="readonly" class="form-control" id="field-1" placeholder="" ng-model="league_name">
+						</div>
+					</div>
+					<!--
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="field-7">Icon</label>
+
+						<div class="col-sm-10">
+							<input type="file" class="form-control" id="leagueIcon" >
+						</div>
+						<div>
+							<img style="display:none" src="" id="thumbnail_img"/>
+						</div>
+					</div>
+					-->
+
+					<div class="form-group">
+
+						<label class="col-sm-2 control-label">Team Count</label>
+						
+							<div class="col-sm-10">
+							
+								<!-- Input spinner, just add class "spinner" to input-group and it will be activated -->
+								<div class="input-group spinner" data-step="1" data-min="1" data-max="36">
+									<span class="input-group-btn">
+										<button class="btn btn-gray" data-type="decrement" ng-click="dec_team_cnt()">-</button>
+									</span>
+									<input type="text" class="form-control text-center" readonly="1" id="team_cnt" value="1"/>
+									<span class="input-group-btn">
+										<button class="btn btn-gray" data-type="increment" ng-click="inc_team_cnt()">+</button>
+									</span>
+								</div>								
+							</div>				
+					</div>
+
+					<div class="form-group-separator"></div>
+
+					<div ng-repeat="i in team_arry">
+						<h4>Team{{i}}</h4>
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="field-1">Name</label>
+
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="field-1" placeholder="" ng-model="teamname[i]">
+							</div>
+
+							<label class="col-sm-2 control-label" for="field-1">ABBR</label>
+
+							<div class="col-sm-4">
+								<input type="text" class="form-control" id="field-2" placeholder="" ng-model="teamabbr[i]">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label class="col-sm-2 control-label" for="field-7">Jersey</label>
+
+							<div class="col-sm-10">
+								<input type="file" fileread="vm.jersey[i]" id="jersey_{{i}}" />
+							</div>
+							<div>
+								<img style="width:196px; height:163px" ng-src={{vm.jersey[i]}} />
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group-separator"></div>
+					
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Fixture Week</label>
+
+						<div class="col-sm-10">
+							<select class="form-control" ng-change="change_fixture()" ng-model="selected_fixture">
+								<option ng-repeat="i in fixture_week_arry" value={{i}}>{{i}}</option>						
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label">First Game</label>
+						
+						<div class="col-sm-6">							
+							<div class="date-and-time">
+								<input type="text" class="form-control datepicker" data-format="dd MM yyyy" ng-model="game_date">
+								<input type="text" class="form-control timepicker" data-template="dropdown" data-default-time="10:00" data-minute-step="1" data-show-meridian="false" ng-model="game_time"/>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="row">
+							<label class="col-sm-2 control-label">Game</label>
+							<label class="col-sm-3 control-label">Home Team</label>
+							<label class="col-sm-3 control-label">Away Team</label>
+							<label class="col-sm-2 control-label">Result</label>
+						</div>
+						<div ng-repeat="i in game_arry">
+							<label class="col-sm-2 control-label">{{i}}</label>
+							<div class="col-sm-3">
+								<select class="form-control" ng-model="home_team[i]" id="home_select_{{i}}">
+									<option ng-repeat="j in team_arry" value={{j}}>{{teamname[j]}}</option>						
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control" ng-model="away_team[i]" id="away_select_{{i}}">
+									<option ng-repeat="j in team_arry" value={{j}}>{{teamname[j]}}</option>						
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<select class="form-control" ng-model="game_result[i]">
+									<option ng-repeat="j in [0,1,2,3,4]" value={{j}}>{{j}}</option>						
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<button type="button" class="btn btn-info btn-single pull-right" ng-click="update_league_data()">Save</button> 
+					</div>
+				</form>
+
+			</div>
+		</div>
+
+
+	</div>
+</div>

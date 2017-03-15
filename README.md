@@ -1,1 +1,1 @@
-# mean_stack
+# MEAN project for Puntr mobile app
