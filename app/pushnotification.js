@@ -7,8 +7,8 @@ var DeviceToken = require('./models/deviceToken.js')
 // var	pushkey = 'app/NewPuntrPushKey.pem';
 
 var pushserverurl = 'gateway.sandbox.push.apple.com';
-var pushcert = 'app/NewDevPushChatCert.pem';
-var pushkey = 'app/NewDevPushChatKey.pem';
+var pushcert = 'app/NewDevPuntrPushChatCert.pem';
+var pushkey = 'app/NewDevPuntrPushChatKey.pem';
 
 var PushServer = new function(){
 	this.apn = require('apn');
