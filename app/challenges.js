@@ -31,14 +31,14 @@ function send_push_notification(userId, message, payload) {
 
             new_notification.save(function(err, data) {
                 if (err) {
-                    console.log("Creating New Notification error" + err);
+                    console.log("Creating New Notification error" + JSON.stringify(err));
                     
                 } else {
                     newResult = {
                         status:"success",
                         notificationId:new_notification._id
                     };
-                    console.log("Creating New Notification error" + newResult);
+                    console.log("Creating New Notification" + JSON.stringify(newResult));
                 }
             });
         }
