@@ -18,10 +18,7 @@ function send_push_notification(userId, message, payload) {
             if(user.badgeNum===undefined)
                 user.badgeNum = 0;
             console.log(user.deviceToken + "," + user.badgeNum);
-            pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
-            user.badgeNum = user.badgeNum + 1;
-            user.save();
-
+            
             var new_notification = new Notification({
                 user_id:   userId,
                 message:   message,
@@ -39,6 +36,11 @@ function send_push_notification(userId, message, payload) {
                         notificationId:new_notification._id
                     };
                     console.log("Creating New Notification" + JSON.stringify(newResult));
+
+                    payload["_id"] = new_notification._id;
+                    pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
+                    user.badgeNum = user.badgeNum + 1;
+                    user.save();
                 }
             });
         }
