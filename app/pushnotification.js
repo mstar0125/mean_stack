@@ -2,13 +2,13 @@ var express = require('express')
 var app = express()
 var DeviceToken = require('./models/deviceToken.js')
 
-// var pushserverurl = 'gateway.push.apple.com';
-// var	pushcert = 'app/NewDevPuntrPushCert.pem';
-// var	pushkey = 'app/NewPuntrPushKey.pem';
+var pushserverurl = 'gateway.push.apple.com';
+var	pushcert = 'app/NewProdPuntrPushCert.pem';
+var	pushkey = 'app/NewProdPuntrPushKey.pem';
 
-var pushserverurl = 'gateway.sandbox.push.apple.com';
-var pushcert = 'app/NewDevPuntrPushCert.pem';
-var pushkey = 'app/NewDevPuntrPushKey.pem';
+// var pushserverurl = 'gateway.sandbox.push.apple.com';
+// var pushcert = 'app/NewDevPuntrPushCert.pem';
+// var pushkey = 'app/NewDevPuntrPushKey.pem';
 
 var PushServer = new function(){
 	this.apn = require('apn');
@@ -26,7 +26,7 @@ var PushServer = new function(){
 			cert: pushcert,
 			key: pushkey,
 			gateway: pushserverurl,
-			passphrase: "puntr88"
+			passphrase: "Puntr88"
 		};
 		this.apnConnection = new this.apn.Connection(this.apnOptions);
 		this.apnConnection.on('connected', function(){ console.log("----Push Server Connected!----")});
