@@ -1,6 +1,7 @@
 var express = require('express')
 var app = express()
 var User = require('./models/user.js')
+var Notification = require('./models/notification.js')
 var Challenge = require('./models/challenge.js')
 var League = require('./models/league.js')
 var US_League = require('./models/US_league.js')
@@ -20,6 +21,15 @@ function send_push_notification(userId, message, payload) {
             pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
             user.badgeNum = user.badgeNum + 1;
             user.save();
+
+            var new_notification = new Notification({
+                user_id:   userId,
+                message:   message,
+                payload:   payload,
+                status:    0
+            });
+
+            new_notification.save();
         }
     });    
 }
