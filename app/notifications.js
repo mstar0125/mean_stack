@@ -4,7 +4,8 @@ var Notification = require('./models/notification.js')
 var _=require('underscore-node')
 
 exports.getPendingNotifications = function(req, res) {
-    Notification.find({user_id:req.params.userId, status:{$ne:0}}, function(err, notifications) {
+    console.log(req.params.userId);
+    Notification.find({user_id:req.params.userId, status:0, function(err, notifications) {
         if(err) {
             res.json({status:'error'});
             return;
