@@ -27,8 +27,8 @@ app.run(function($state, $rootScope, $location, authentication)
 		public_vars.$pageLoadingOverlay.addClass('loaded');
 	})
 
-	$rootScope.api_path = "http://ec2-54-87-227-225.compute-1.amazonaws.com:8080/api/";
-	$rootScope.US_api_path = "http://ec2-54-87-227-225.compute-1.amazonaws.com:8080/api/us/";
+	$rootScope.api_path = "http://ec2-34-205-135-243.compute-1.amazonaws.com:8080/api/";
+	$rootScope.US_api_path = "http://ec2-34-205-135-243.compute-1.amazonaws.com:8080/api/us/";
 	//$rootScope.api_path = "http://localhost:8080/api/";
 	//$rootScope.US_api_path = "http://localhost:8080/api/us/";
 	$rootScope.game_count = 16;
