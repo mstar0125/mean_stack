@@ -348,4 +348,9 @@ module.exports = function(router) {
 		.get(notifications.getPendingNotifications);
 	router.route('/us/v2/notification/pending/:userId')
 		.get(notifications.getPendingNotifications);
+
+	router.route('/v2/notification/update/:notificationId')
+		.post(notifications.updateNotificationStatus);
+	router.route('/us/v2/notification/update/:notificationId')
+		.post(notifications.updateNotificationStatus);
 };
