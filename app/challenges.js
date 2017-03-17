@@ -31,7 +31,7 @@ function send_push_notification(userId, message, payload) {
 
             new_notification.save(function(err, data) {
                 if (err) {
-                    console.log("Creating New Notification error");
+                    console.log("Creating New Notification error" + err);
                     
                 } else {
                     newResult = {
