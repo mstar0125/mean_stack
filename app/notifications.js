@@ -9,6 +9,7 @@ exports.getPendingNotifications = function(req, res) {
             res.json({status:'error'});
             return;
         }
+        console.log(JSON.stringify(notifications));
         res.json({status:'success', notifications:notifications});
     });
 }
