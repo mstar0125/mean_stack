@@ -39,7 +39,7 @@ exports.saveNotification = function(req, res) {
 
 exports.updateNotificationStatus = function(req, res) {
 
-    Notification.findById(req.params.id, function(err, notification){
+    Notification.findById(req.params.notificationId, function(err, notification){
         if (err) return;
         if(notification) {
             notification.status = 1;
