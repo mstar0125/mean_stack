@@ -4,7 +4,7 @@ var Schema       = mongoose.Schema;
 var notificationSchema = new Schema({
   user_id:       String,
   message:     String,
-  payload:      String,
+  payload:      Object,
   status:       { type:Number, default:0 }, //0:pending 1:finished
 }, {collection: 'notification' });
 
