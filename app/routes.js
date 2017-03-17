@@ -7,7 +7,7 @@ var auth = jwt({
 
 var mongoose   = require('mongoose');
 //mongoose.connect('mongodb://localhost:27017/puntrDB_hybrid');
-mongoose.connect('mongodb://root:G6yDNNCWoFf3@ec2-34-205-135-243.compute-1.amazonaws.com:27017/puntrDB')
+mongoose.connect('mongodb://root:G6yDNNCWoFf3@127.0.0.1:27017/puntrDB')
 var db = mongoose.connection;
 	db.on('error', function(err){
 		console.log('PuntrDB connection failed with error:', err);
