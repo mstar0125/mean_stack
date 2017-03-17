@@ -43,7 +43,7 @@ exports.updateNotificationStatus = function(req, res) {
         if (err) return;
         if(notification) {
             notification.status = 1;
-            Notification.save(function(error, data){
+            notification.save(function(error, data){
                 if (error) {
                     res.json({status:'error'});  
                     return;
