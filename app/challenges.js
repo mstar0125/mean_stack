@@ -29,7 +29,18 @@ function send_push_notification(userId, message, payload) {
                 status:    0
             });
 
-            new_notification.save();
+            new_notification.save(function(err, data) {
+                if (err) {
+                    console.log("Creating New Notification error");
+                    
+                } else {
+                    newResult = {
+                        status:"success",
+                        notificationId:new_notification._id
+                    };
+                    console.log("Creating New Notification error" + newResult);
+                }
+            });
         }
     });    
 }
