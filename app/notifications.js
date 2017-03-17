@@ -5,7 +5,7 @@ var _=require('underscore-node')
 
 exports.getPendingNotifications = function(req, res) {
     console.log(req.params.userId);
-    Notification.find({user_id:req.params.userId, status:0, function(err, notifications) {
+    Notification.find({user_id:req.params.userId, status:0}, function(err, notifications) {
         if(err) {
             res.json({status:'error'});
             return;
