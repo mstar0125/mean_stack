@@ -23,6 +23,7 @@ var rankings = require('./rankings.js');
 var prizes = require('./prizes.js');
 var withdraws = require('./withdraws.js');
 var challenges = require('./challenges.js');
+var notifications = require('./notifications.js');
 var proxy = require('./proxy.js');
 var US_leagues = require('./US_leagues.js');
 var US_rankings = require('./US_rankings.js');
@@ -343,4 +344,8 @@ module.exports = function(router) {
 	router.route('/us/v2/challenge/getUserChallenges/:userID/:leagueType')
 		.get(challenges.getUserChallenges);
 
+	router.route('/v2/notification/pending/:userId')
+		.get(notifications.getPendingNotifications);
+	router.route('/us/v2/notification/pending/:userId')
+		.get(notifications.getPendingNotifications);
 };
