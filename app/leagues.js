@@ -11,6 +11,8 @@ var jsonQuery = require('json-query')
 var pushnotification =  require('./pushnotification.js');
 var cron = require('cron');
 var Challenge = require('./models/challenge.js');
+var Notification = require('./models/notification.js');
+
 var cronJob = cron.job("0 * * * * *", function(){
     console.info('cron job started');
     var now = new Date();
