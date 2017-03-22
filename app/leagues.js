@@ -135,7 +135,7 @@ exports.getPickableFixtureData = function(req, res) {
                             return;
                         }
                     });
-
+                    console.log("activeWeek=" + activeWeek);
                     if (activeWeek == null) {
                         console.log("week_found=0");
                         res.json({status:'none'});
