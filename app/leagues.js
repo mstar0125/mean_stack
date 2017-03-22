@@ -118,22 +118,21 @@ exports.getPickableFixtureData = function(req, res) {
             if(league) {
                 if(league.fixture_info.length>=1) {
                     
+                    week_found = 0;
                     league.fixture_info.forEach(function(item) {
                         //console.log(JSON.stringify(item));
                         //console.log("next count");
-                        count1++;
-                        console.log("count="+count1);
-                        console.log("start=" + item.start_date);
-                        console.log("today=" + today);
-                        console.log("lastday=" + lastday);
-                        if(item.start_date.getTime() >= today.getTime()) {// && item.start_date.getTime() <= lastday.getTime()) {
-                            week_found = 1;
-                            count2++;
-                            console.log("found week=" + item.week_no);
-
-                            activeWeek = item;
-                            return;
-                        }
+                        if(week_found == 0) {
+                            console.log("week_no="+item.week_no);
+                            console.log("start=" + item.start_date);
+                            console.log("today=" + today);
+                            console.log("lastday=" + lastday);
+                            if(item.start_date.getTime() >= today.getTime()) {// && item.start_date.getTime() <= lastday.getTime()) {
+                                week_found = 1;
+                                console.log("found week=" + item.week_no);
+                                activeWeek = item;
+                            }
+                        }                        
                     });
                     console.log("activeWeek=" + activeWeek);
                     if (activeWeek == null) {
