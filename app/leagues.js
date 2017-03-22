@@ -132,7 +132,7 @@ exports.getPickableFixtureData = function(req, res) {
                             console.log("found week=" + item.week_no);
 
                             activeWeek = item;
-                            break;
+                            return;
                         }
                     });
 
