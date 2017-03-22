@@ -111,11 +111,13 @@ exports.getPickableFixtureData = function(req, res) {
     var count2 = 0;
     var week_found = 0;
     var result = {};
+    var activeWeek = null;
 
     League.findOne({'index': req.params.leagueIndex}, function(err, league) {
         if(!err) {
             if(league) {
                 if(league.fixture_info.length>=1) {
+                    
                     league.fixture_info.forEach(function(item) {
                         //console.log(JSON.stringify(item));
                         //console.log("next count");
@@ -127,40 +129,40 @@ exports.getPickableFixtureData = function(req, res) {
                         if(item.start_date.getTime() >= today.getTime()) {// && item.start_date.getTime() <= lastday.getTime()) {
                             week_found = 1;
                             count2++;
-                            console.log("ok");
-                            //console.log(req.params.userId);
-                            //console.log(req.params.leagueIndex);
-                            //console.log(item.week_no);
-                            
-                            Expectation.findOne({"week_no": item.week_no, "userId": req.params.userId, "leagueId": req.params.leagueIndex}, function(err, expectation) {
-                                count2--;
-                                console.log(expectation);
-                                console.log("count="+count1);
-                                if((!expectation || expectation.status=='non-active') && isEmptyObject(result)) {
-                                    //console.log("length=0");                                
-                                    result = {
-                                        status: 'success',
-                                        data: item
-                                    };
-                                    if(!expectation)
-                                        result.repeat = 0;
-                                    else if(expectation.status=='non-active') {
-                                        result.data = expectation;
-                                        result.repeat = 1;
-                                    }
-                                    res.json(result);
-                                }                       
-                                if(count2 == 0 && isEmptyObject(result)) {                        
-                                    console.log("week_found=0");
-                                    res.json({status:'none'});
-                                }
-                            });                        
+                            console.log("found week=" + item.week_no);
+
+                            activeWeek = item;
+                            break;
                         }
-                        if(count1==league.fixture_info.length && week_found==0) {
-                            res.json({status:'none'});
-                        }
+                    });
+
+                    if (activeWeek == null) {
+                        console.log("week_found=0");
+                        res.json({status:'none'});
+                    }else{
                         
-                    });      
+                        Expectation.findOne({"week_no": activeWeek.week_no, "userId": req.params.userId, "leagueId": req.params.leagueIndex}, function(err, expectation) {
+                            console.log(expectation);
+                            if(!expectation || expectation.status=='non-active') {
+                                //console.log("length=0");   
+                                console.log("week_found=1");                     
+                                result = {
+                                    status: 'success',
+                                    data: activeWeek
+                                };
+                                if(!expectation)
+                                    result.repeat = 0;
+                                else if(expectation.status=='non-active') {
+                                    result.data = expectation;
+                                    result.repeat = 1;
+                                }
+                                res.json(result);
+                            }else {                        
+                                console.log("week_found=0");
+                                res.json({status:'none'});
+                            }
+                        });   
+                    }     
                 } else {
                     res.json({status:'none'});
                 }          
