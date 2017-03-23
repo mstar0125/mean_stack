@@ -420,7 +420,7 @@ function send_push_notification(userId, message, payload) {
         console.log("notification_user: "+JSON.stringify(user));
         if(err)
             return;
-        if(user && user.deviceToken) {
+        if(user) {
             if(user.badgeNum===undefined)
                 user.badgeNum = 0;
             console.log(user.deviceToken + "," + user.badgeNum);
@@ -443,9 +443,12 @@ function send_push_notification(userId, message, payload) {
                     };
                     console.log("Creating New Notification" + JSON.stringify(newResult));
 
-                    payload["_id"] = new_notification._id;
-                    pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
-                    user.badgeNum = user.badgeNum + 1;
+                    if(user.deviceToken) {
+                        payload["_id"] = new_notification._id;
+                        pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
+                        user.badgeNum = user.badgeNum + 1;    
+                    }
+                    
                     user.save();
                 }
             });
