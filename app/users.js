@@ -3,7 +3,7 @@ var app = express()
 var User = require('./models/user.js')
 var DeviceToken = require('./models/deviceToken.js')
 var Withdraw = require('./models/withdraw.js')
-var Challenges = require('./models/challenges.js')
+var Challenges = require('./models/challenge.js')
 var _=require('underscore-node')
 
 exports.register = function(req, res) {
