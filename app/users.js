@@ -3,6 +3,7 @@ var app = express()
 var User = require('./models/user.js')
 var DeviceToken = require('./models/deviceToken.js')
 var Withdraw = require('./models/withdraw.js')
+var Challenges = require('./models/challenges.js')
 var _=require('underscore-node')
 
 exports.register = function(req, res) {
@@ -188,6 +189,38 @@ exports.getAllUsers = function(req, res) {
         if(err) return;
         else
             res.json({status: 'success', users: users});
+    })
+}
+
+exports.getAllUsersWithAvailability = function(req, res) {
+    User.find({}, function(err, users) {
+        if(err) return;
+        else {
+            Challenge.find({$or:[{fromID:req.params.userID}, {toID:req.params.userID}], status:{$ne:1}}, function(err, challenges) {
+                if(err) {
+                    res.json({status:'error'});
+                    return;
+                }
+
+                var allUsers = [];
+                users.forEach(function(user) {
+                    
+                    var userChallenge = {};
+                    challenges.forEach(function(challenge) {
+                        if (user._id == challenge.fromID || user._id == challenge.toID) {
+                            userChallenge = challenge;
+                        }
+                    }
+                    var temp = {
+                        'user' : user,
+                        'user_challenge' : userChallenge
+                    };
+                    allUsers.push(temp);
+                });
+
+                res.json({status: 'success', users: allUsers});
+            });
+        }
     })
 }
 

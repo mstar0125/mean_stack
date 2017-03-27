@@ -109,56 +109,54 @@ exports.getPickableFixtureData = function(req, res) {
     var count2 = 0;
     var week_found = 0;
     var result = {};
+    var activeWeek = null;
 
     League.findOne({'index': req.params.leagueIndex}, function(err, league) {
         if(!err) {
             if(league) {
                 if(league.fixture_info.length>=1) {
+
+                    week_found = 0;
                     league.fixture_info.forEach(function(item) {
-                        //console.log(JSON.stringify(item));
-                        //console.log("next count");
-                        count1++;
-                        console.log("count="+count1);
-                        console.log("start=" + item.start_date);
-                        console.log("today=" + today);
-                        console.log("lastday=" + lastday);
-                        if(item.start_date.getTime() >= today.getTime()) {// && item.start_date.getTime() <= lastday.getTime()) {
-                            week_found = 1;
-                            count2++;
-                            console.log("ok");
-                            //console.log(req.params.userId);
-                            //console.log(req.params.leagueIndex);
-                            //console.log(item.week_no);
-                            
-                            Expectation.findOne({"week_no": item.week_no, "userId": req.params.userId, "leagueId": req.params.leagueIndex}, function(err, expectation) {
-                                count2--;
-                                console.log(expectation);
-                                console.log("count="+count1);
-                                if((!expectation || expectation.status=='non-active') && isEmptyObject(result)) {
-                                    //console.log("length=0");                                
-                                    result = {
-                                        status: 'success',
-                                        data: item
-                                    };
-                                    if(!expectation)
-                                        result.repeat = 0;
-                                    else if(expectation.status=='non-active') {
-                                        result.data = expectation;
-                                        result.repeat = 1;
-                                    }
-                                    res.json(result);
-                                }                       
-                                if(count2 == 0 && isEmptyObject(result)) {                        
-                                    console.log("week_found=0");
-                                    res.json({status:'none'});
-                                }
-                            });                        
-                        }
-                        if(count1==league.fixture_info.length && week_found==0) {
-                            res.json({status:'none'});
-                        }
+                        if(week_found == 0) {
+                            console.log("week_no="+item.week_no);
+                            console.log("start=" + item.start_date);
+                            console.log("today=" + today);
+                            console.log("lastday=" + lastday);
+                            if(item.start_date.getTime() >= today.getTime()) {// && item.start_date.getTime() <= lastday.getTime()) {
+                                week_found = 1;
+                                activeWeek = item;
+                            }
+                        }                        
+                    });
+                    console.log("activeWeek=" + activeWeek);
+                    if (activeWeek == null) {
+                        console.log("week_found=0");
+                        res.json({status:'none'});
+                    }else{
                         
-                    });      
+                        Expectation.findOne({"week_no": activeWeek.week_no, "userId": req.params.userId, "leagueId": req.params.leagueIndex}, function(err, expectation) {
+                            console.log(expectation);
+                            if(!expectation || expectation.status=='non-active') {
+                                //console.log("length=0");   
+                                console.log("week_found=1");                     
+                                result = {
+                                    status: 'success',
+                                    data: activeWeek
+                                };
+                                if(!expectation)
+                                    result.repeat = 0;
+                                else if(expectation.status=='non-active') {
+                                    result.data = expectation;
+                                    result.repeat = 1;
+                                }
+                                res.json(result);
+                            }else {                        
+                                console.log("week_found=0");
+                                res.json({status:'none'});
+                            }
+                        });   
+                    }
                 } else {
                     res.json({status:'none'});
                 }          
@@ -417,10 +415,10 @@ function send_push_notification(userId, message, payload) {
         //console.log("notification_user: "+JSON.stringify(user));
         if(err)
             return;
-        if(user && user.deviceToken) {
+        if(user) {
             if(user.badgeNum===undefined)
                 user.badgeNum = 0;
-            //console.log(user.deviceToken + "," + user.badgeNum);
+            console.log(user.deviceToken + "," + user.badgeNum);
 
             var new_notification = new Notification({
                 user_id:   userId,
@@ -440,9 +438,12 @@ function send_push_notification(userId, message, payload) {
                     };
                     console.log("Creating New Notification" + JSON.stringify(newResult));
 
-                    payload["_id"] = new_notification._id;
-                    pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
-                    user.badgeNum = user.badgeNum + 1;
+                    if(user.deviceToken) {
+                        payload["_id"] = new_notification._id;
+                        pushnotification.PushServer.send('iOS', user.deviceToken, user.badgeNum+1, message, payload);
+                        user.badgeNum = user.badgeNum + 1;    
+                    }
+                    
                     user.save();
                 }
             });
