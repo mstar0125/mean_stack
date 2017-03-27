@@ -210,7 +210,7 @@ exports.getAllUsersWithAvailability = function(req, res) {
                         if (user._id == challenge.fromID || user._id == challenge.toID) {
                             userChallenge = challenge;
                         }
-                    }
+                    });
                     var temp = {
                         'user' : user,
                         'user_challenge' : userChallenge
