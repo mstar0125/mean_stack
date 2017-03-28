@@ -46,6 +46,8 @@ function send_push_notification(userId, message, payload) {
                     user.save();
                 }
             });
+        }else{
+
         }
     });    
 }
@@ -187,6 +189,7 @@ exports.declineRequest = function(req, res) {
         if(err)
             res.json({"status": "error while finding challenge"});
 
+        console.log("challenge=" + JSON.stringify(challenge));
         if(challenge) {
             challenge.status = 2;
             challenge.save(function(err, data) {
