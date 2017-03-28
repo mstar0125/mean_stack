@@ -549,9 +549,9 @@ exports.updateLeagueDataByIndex = function(req, res) {
                                 expectation.percent = percent;
                                 expectation.markModified('percent');
                                 //console.log(expectation);
+                                console.log("updating expectation");
                                 expectation.save(function(err, data) {
-
-                                    //console.log(data);
+                                    console.log(data);
                                     if(expectation.status == 'finished' && expectation.eligible==1 && expectation.percent==100) {
                                         win_users_list.push(expectation.userId);
                                         console.log("adding win_user");  
