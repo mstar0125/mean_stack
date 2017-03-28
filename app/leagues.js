@@ -457,7 +457,7 @@ function send_push_notification(userId, message, payload) {
 }
 
 exports.updateLeagueDataByIndex = function(req, res) {
-    console.log("updateLeague: "+JSON.stringify(req.body));
+    console.log("updateLeague: "+req.params.index);
     League.findOne({index: req.params.index}, function(err, league) {
         if(!err) {
             if(league) {
@@ -480,7 +480,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
                         var totalExpectCount = 0;
 
                         Expectation.find({'week_no': req.body.fixture_week, 'leagueId': req.params.index}, function(err, expectations) {
-                            //console.log(JSON.stringify(expectations));
+                            console.log(JSON.stringify(expectations));
                             totalExpectCount = expectations.length;
                             expectations.forEach(function(expectation) { 
                                 expect_count++;
