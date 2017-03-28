@@ -354,8 +354,8 @@ module.exports = function(router) {
 	router.route('/us/v2/notification/update/:notificationId')
 		.post(notifications.updateNotificationStatus);
 
-	router.route('/v2/users/all')
+	router.route('/v2/users/all/:userId')
 		.get(users.getAllUsersWithAvailability);
-	router.route('/v2/us/users/all')
+	router.route('/v2/us/users/all/:userId')
 		.get(users.getAllUsersWithAvailability);
 };

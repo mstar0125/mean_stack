@@ -196,7 +196,7 @@ exports.getAllUsersWithAvailability = function(req, res) {
     User.find({}, function(err, users) {
         if(err) return;
         else {
-            Challenge.find({$or:[{fromID:req.params.userID}, {toID:req.params.userID}], status:{$ne:1}}, function(err, challenges) {
+            Challenge.find({$or:[{fromID:req.params.userId}, {toID:req.params.userId}], status:{$ne:1}}, function(err, challenges) {
                 if(err) {
                     res.json({status:'error'});
                     return;
