@@ -169,7 +169,7 @@ exports.acceptRequest = function(req, res) {
                             };
                             send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
                             
-                                       
+                            res.json({"status":"success"}); 
                         } else {
                             res.json({"status":"user not found"});
                         }
@@ -182,6 +182,7 @@ exports.acceptRequest = function(req, res) {
 
 exports.declineRequest = function(req, res) {
     
+    console.log("declineRequest");
     Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
         if(err)
             res.json({"status": "error while finding challenge"});
@@ -204,7 +205,7 @@ exports.declineRequest = function(req, res) {
                                 'challenge_id': challenge._id
                             };
                             send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
-                            
+                            res.json({"status":"success"}); 
                         }else {
                             res.json({"status":"user not found"});
                         }
