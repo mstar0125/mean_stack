@@ -177,9 +177,7 @@ exports.acceptRequest = function(req, res) {
                 }
             });
         }
-    }
-
-    
+    });
 }
 
 exports.declineRequest = function(req, res) {
@@ -215,7 +213,5 @@ exports.declineRequest = function(req, res) {
                 }
             });
         }
-    }
-
-     
+    });     
 }
