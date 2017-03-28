@@ -206,7 +206,7 @@ exports.getAllUsersWithAvailability = function(req, res) {
                 var allUsers = [];
                 users.forEach(function(user) {
                     
-                    if (user.userId != req.params.userId) {
+                    if (user._id != req.params.userId) {
                         var userChallenge = {};
                         challenges.forEach(function(challenge) {
                             if (user._id == challenge.fromID || user._id == challenge.toID) {

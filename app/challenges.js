@@ -207,7 +207,7 @@ exports.declineRequest = function(req, res) {
                                 'to'       : challenge.toID,
                                 'challenge_id': challenge._id
                             };
-                            send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
+                            send_push_notification(challenge.fromID, user.name + " declined your challenge!", payload);
                             res.json({"status":"success"}); 
                         }else {
                             res.json({"status":"user not found"});
