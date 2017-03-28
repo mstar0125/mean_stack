@@ -105,16 +105,42 @@ exports.getChallengableWeeks = function(req, res) {
 }
 
 exports.postRequest = function(req, res) {
-    var payload = {
-        'type'       : 'challenge_request',
-        'leagueType' : req.params.leagueType,
-        'duration'   : req.params.duration,
-        'leagueID'   : req.params.leagueID,
-        'from'       : req.params.fromID,
-        'start'      : req.params.start
-    };
-    send_push_notification(req.params.toID, "Someone challenges you!", payload);
-    res.json({"status": "success"});
+
+    var new_challenge = new Challenge({
+        leagueType:   req.params.leagueType,
+        leagueID:     req.params.leagueID,
+        fromID:       req.params.fromID,
+        toID:         req.params.toID,
+        start_week:   req.params.start,
+        duration:     req.params.duration
+    });
+
+    new_challenge.save(function(err, data) {
+        if (err) {
+            console.log("Creating New Challenge error");
+            res.json({status:'error'});
+        } else {
+            newResult = {
+                status:"success",
+                challengeID:new_challenge._id
+            };
+            // res.json(newResult);
+
+            var payload = {
+                'type'       : 'challenge_request',
+                'leagueType' : req.params.leagueType,
+                'duration'   : req.params.duration,
+                'leagueID'   : req.params.leagueID,
+                'from'       : req.params.fromID,
+                'start'      : req.params.start,
+                'challenge_id': new_challenge._id,
+            };
+            send_push_notification(req.params.toID, "Someone challenges you!", payload);
+            res.json({"status": "success"});
+        }
+    });
+
+    
 }
 
 exports.acceptRequest = function(req, res) {
@@ -122,33 +148,29 @@ exports.acceptRequest = function(req, res) {
         if(err)
             res.json({"status": "error while finding user"});
         if(user) {
-            var payload = {
-                'type'     : 'challenge_accept',
-                'to'       : req.params.toID
-            };
-            send_push_notification(req.params.fromID, user.name + " accepted your challenge!", payload);
+            
+            
+            Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
+                if(err)
+                    res.json({"status": "error while finding challenge"});
 
-            var new_challenge = new Challenge({
-                leagueType:   req.params.leagueType,
-                leagueID:     req.params.leagueID,
-                fromID:       req.params.fromID,
-                toID:         req.params.toID,
-                start_week:   req.params.start,
-                duration:     req.params.duration
-            });
-
-            new_challenge.save(function(err, data) {
-                if (err) {
-                    console.log("Creating New Challenge error");
-                    res.json({status:'error'});
-                } else {
-                    newResult = {
-                        status:"success",
-                        userID:new_challenge._id
-                    };
-                    res.json(newResult);
+                if(challenge) {
+                    challenge.status = 1;
+                    challenge.save(function(err, data) {
+                        if (err) {
+                            console.log("Creating New Challenge error");
+                            res.json({status:'error'});
+                        } else {
+                            
+                            var payload = {
+                                'type'     : 'challenge_accept',
+                                'to'       : req.params.toID
+                            };
+                            send_push_notification(req.params.fromID, user.name + " accepted your challenge!", payload);
+                        }
+                    });
                 }
-            });
+            }
                        
         } else {
             res.json({"status":"user not found"});
@@ -165,8 +187,30 @@ exports.declineRequest = function(req, res) {
         if(err)
             res.json({"status": "error"});
         if(user) {
-            send_push_notification(req.params.fromID, user.name + " declined your challenge!", payload);
-            res.json({"status": "success"});
+
+            Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
+                if(err)
+                    res.json({"status": "error while finding challenge"});
+
+                if(challenge) {
+                    challenge.status = 2;
+                    challenge.save(function(err, data) {
+                        if (err) {
+                            console.log("Creating New Challenge error");
+                            res.json({status:'error'});
+                        } else {
+                            
+                            var payload = {
+                                'type'     : 'challenge_decline',
+                                'to'       : req.params.toID
+                            };
+                            send_push_notification(req.params.fromID, user.name + " accepted your challenge!", payload);
+                        }
+                    });
+                }
+            }
+        }else {
+            res.json({"status":"user not found"});
         }
     });    
 }

@@ -575,7 +575,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
 
                                         if(expectation.status == 'finished') {
                                             //update challenge battle result
-                                            Challenge.find({'leagueType':0 , 'status':0, 'leagueID':req.params.index}, function(err, challenges) {
+                                            Challenge.find({'leagueType':0 , 'status':1, 'leagueID':req.params.index}, function(err, challenges) {
                                                 if(!err) {
                                                     if(challenges) {
                                                         challenges.forEach(function(challenge) {
@@ -697,7 +697,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
                                                                     send_push_notification(fromUser, message1, payload1);                                                                
                                                                     send_push_notification(toUser, message2, payload2);
 
-                                                                    challenge.status = 1;
+                                                                    challenge.status = 3;
                                                                     challenge.markModified('status');
                                                                     challenge.save();
                                                                 }
