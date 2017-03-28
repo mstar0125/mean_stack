@@ -60,7 +60,7 @@ function isEmptyObject(obj) {
 }
 
 exports.getUserChallenges = function(req, res) {
-    Challenge.find({leagueType:req.params.leagueType, $or:[{fromID:req.params.userID}, {toID:req.params.userID}], status:{$ne:1}}, function(err, challenge) {
+    Challenge.find({leagueType:req.params.leagueType, $or:[{fromID:req.params.userID}, {toID:req.params.userID}], status:1}, function(err, challenge) {
         if(err) {
             res.json({status:'error'});
             return;
