@@ -144,73 +144,78 @@ exports.postRequest = function(req, res) {
 }
 
 exports.acceptRequest = function(req, res) {
-    User.findOne({_id:req.params.toID}, function(err, user) {
-        if(err)
-            res.json({"status": "error while finding user"});
-        if(user) {
-            
-            
-            Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
-                if(err)
-                    res.json({"status": "error while finding challenge"});
 
-                if(challenge) {
-                    challenge.status = 1;
-                    challenge.save(function(err, data) {
-                        if (err) {
-                            console.log("Creating New Challenge error");
-                            res.json({status:'error'});
-                        } else {
+    Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
+        if(err)
+            res.json({"status": "error while finding challenge"});
+
+        if(challenge) {
+            challenge.status = 1;
+            challenge.save(function(err, data) {
+                if (err) {
+                    console.log("Updating Challenge error");
+                    res.json({status:'error'});
+                } else {
+                    
+                    User.findOne({_id:challenge.toID}, function(err, user) {
+                        if(err)
+                            res.json({"status": "error while finding user"});
+                        if(user) {
                             
                             var payload = {
-                                'type'     : 'challenge_accept',
-                                'to'       : req.params.toID
+                                'type'     :    'challenge_accept',
+                                'to'       :    challenge.toID,
+                                'challenge_id': challenge._id
                             };
-                            send_push_notification(req.params.fromID, user.name + " accepted your challenge!", payload);
+                            send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
+                            
+                                       
+                        } else {
+                            res.json({"status":"user not found"});
                         }
                     });
                 }
-            }
-                       
-        } else {
-            res.json({"status":"user not found"});
+            });
         }
-    });
+    }
+
+    
 }
 
 exports.declineRequest = function(req, res) {
-    var payload = {
-        'type'     : 'challenge_decline',
-        'to'       : req.params.toID
-    };
-    User.findOne({_id:req.params.toID}, function(err, user) {
+    
+    Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
         if(err)
-            res.json({"status": "error"});
-        if(user) {
+            res.json({"status": "error while finding challenge"});
 
-            Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
-                if(err)
-                    res.json({"status": "error while finding challenge"});
-
-                if(challenge) {
-                    challenge.status = 2;
-                    challenge.save(function(err, data) {
-                        if (err) {
-                            console.log("Creating New Challenge error");
-                            res.json({status:'error'});
-                        } else {
-                            
+        if(challenge) {
+            challenge.status = 2;
+            challenge.save(function(err, data) {
+                if (err) {
+                    console.log("Updating Challenge error");
+                    res.json({status:'error'});
+                } else {
+                    
+                    User.findOne({_id:challenge.toID}, function(err, user) {
+                        if(err)
+                            res.json({"status": "error"});
+                        if(user) {
                             var payload = {
                                 'type'     : 'challenge_decline',
-                                'to'       : req.params.toID
+                                'to'       : challenge.toID,
+                                'challenge_id': challenge._id
                             };
-                            send_push_notification(req.params.fromID, user.name + " accepted your challenge!", payload);
+                            send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
+                            
+                        }else {
+                            res.json({"status":"user not found"});
                         }
-                    });
+                    });   
+                    
                 }
-            }
-        }else {
-            res.json({"status":"user not found"});
+            });
         }
-    });    
+    }
+
+     
 }

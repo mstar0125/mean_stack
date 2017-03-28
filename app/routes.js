@@ -324,11 +324,11 @@ module.exports = function(router) {
 
 	router.route('/v2/challenge/getWeeks/:leagueType/:leagueID')
 		.get(challenges.getChallengableWeeks);
-	router.route('/v2/challenge/request/:fromID/:toID/:leagueType/:leagueID/:start/:duration')
+	router.route('/v2/challenge/request/:challengeId')
 		.post(challenges.postRequest);
 	router.route('/v2/challenge/accept/:fromID/:toID/:leagueType/:leagueID/:start/:duration')
 		.post(challenges.acceptRequest);
-	router.route('/v2/challenge/decline/:fromID/:toID')
+	router.route('/v2/challenge/decline/:challengeId')
 		.post(challenges.declineRequest);
 	router.route('/v2/challenge/getUserChallenges/:userID/:leagueType')
 		.get(challenges.getUserChallenges);
