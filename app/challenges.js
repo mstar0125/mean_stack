@@ -184,7 +184,7 @@ exports.acceptRequest = function(req, res) {
 
 exports.declineRequest = function(req, res) {
     
-    console.log("declineRequest");
+    console.log("declineRequest: challengeId" + req.params.challengeId);
     Challenge.findOne({_id:req.params.challengeId}, function(err, challenge) {
         if(err)
             res.json({"status": "error while finding challenge"});
