@@ -234,34 +234,38 @@ exports.getAllUsersWithChallengeAvailability = function(req, res) {
         else {
 
             var allUsers = [];
-            users.forEach(function(user) {
-                    
-                if (user._id != req.params.userId) {
 
-                    var hasChallenge = false;
-                    var query = {$or:[{fromID:req.params.userId, toID:user._id}, {fromID:user._id, toID:req.params.userId}], $or:[{status:0}, {status:1}]};
-                    console.log(JSON.stringify(query));
-                    
-                    Challenge.findOne(query, function(err, challenge) {
-                        if(err) {
-                            
-                        }
+            var query = {$or:[{fromID:req.params.userId}, {toID:req.params.userId}], $or:[{status:0}, {status:1}]};
+            console.log(JSON.stringify(query));
+            
+            Challenge.find(query, function(err, challenges) {
+                if(err) {
+                    res.json({status:'error'});
+                    return;
+                }
 
-                        if (challenge) {
-                            hasChallenge = true;
-                        }
+                users.forEach(function(user) {
+                    
+                    if (user._id != req.params.userId) {
+
+                        var hasChallenge = false;
+                        challenges.forEach(function(challenge) {
                         
+                            if (user._id == challenge.fromID || user._id == challenge.toID ) {
+                                hasChallenge = true;
+                            }
+                        });
+
                         var temp = {
                             'user' : user,
                             'has_challenge' : hasChallenge
                         };
                         allUsers.push(temp);
-                    });
-
-                    res.json({status: 'success', users: allUsers});
+                    }
                     
-                }
+                });
                 
+                res.json({status: 'success', users: allUsers});
             });
         }
     })
