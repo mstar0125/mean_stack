@@ -358,4 +358,9 @@ module.exports = function(router) {
 		.get(users.getAllUsersWithAvailability);
 	router.route('/v2/us/users/all/:userId')
 		.get(users.getAllUsersWithAvailability);
+
+	router.route('/v2/opponents/all/:userId')
+		.get(users.getAllUsersWithChallengeAvailability);
+	router.route('/v2/us/opponents/all/:userId')
+		.get(users.getAllUsersWithChallengeAvailability);
 };

@@ -197,6 +197,42 @@ exports.getAllUsersWithAvailability = function(req, res) {
         if(err) return;
         else {
 
+            Challenge.find({$or:[{fromID:req.params.userId}, {toID:req.params.userId}], $or:[{status:0}, {status:1}]}, function(err, challenges) {
+                if(err) {
+                    res.json({status:'error'});
+                    return;
+                }
+
+                var allUsers = [];
+                users.forEach(function(user) {
+                    
+                    if (user._id != req.params.userId) {
+                        var userChallenge = {};
+                        challenges.forEach(function(challenge) {
+                            if (user._id == challenge.fromID || user._id == challenge.toID) {
+                                userChallenge = challenge;
+                            }
+                        });
+                        var temp = {
+                            'user' : user,
+                            'user_challenge' : userChallenge
+                        };
+                        allUsers.push(temp);
+                    }
+                    
+                });
+
+                res.json({status: 'success', users: allUsers});
+            });
+        }
+    })
+}
+
+exports.getAllUsersWithChallengeAvailability = function(req, res) {
+    User.find({}, function(err, users) {
+        if(err) return;
+        else {
+
             var allUsers = [];
             users.forEach(function(user) {
                     
