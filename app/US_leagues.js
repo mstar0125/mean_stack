@@ -11,6 +11,7 @@ var jsonQuery = require('json-query')
 var pushnotification =  require('./pushnotification.js');
 var cron = require('cron');
 var Challenge = require('./models/challenge.js');
+var Notification = require('./models/notification.js');
 var cronJob = cron.job("0 * * * * *", function(){
     console.info('cron job started');
     var now = new Date();
@@ -570,7 +571,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
 
                                         if(expectation.status == 'finished') {
                                             //update challenge battle result
-                                            Challenge.find({'leagueType':1 , 'status':0, 'leagueID':req.params.index}, function(err, challenges) {
+                                            Challenge.find({'leagueType':1 , 'status':1, 'leagueID':req.params.index}, function(err, challenges) {
                                                 if(!err) {
                                                     if(challenges) {
                                                         challenges.forEach(function(challenge) {
@@ -692,7 +693,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
                                                                     send_push_notification(fromUser, message1, payload1);                                                                
                                                                     send_push_notification(toUser, message2, payload2);
 
-                                                                    challenge.status = 1;
+                                                                    challenge.status = 3;
                                                                     challenge.markModified('status');
                                                                     challenge.save();
                                                                 }

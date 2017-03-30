@@ -337,9 +337,9 @@ module.exports = function(router) {
 		.get(challenges.getChallengableWeeks);
 	router.route('/us/v2/challenge/request/:fromID/:toID/:leagueType/:leagueID/:start/:duration')
 		.post(challenges.postRequest);
-	router.route('/us/v2/challenge/accept/:fromID/:toID/:leagueType/:leagueID/:start/:duration')
+	router.route('/us/v2/challenge/accept/:challengeId')
 		.post(challenges.acceptRequest);
-	router.route('/us/v2/challenge/decline/:fromID/:toID')
+	router.route('/us/v2/challenge/decline/:challengeId')
 		.post(challenges.declineRequest);
 	router.route('/us/v2/challenge/getUserChallenges/:userID/:leagueType')
 		.get(challenges.getUserChallenges);
@@ -356,11 +356,11 @@ module.exports = function(router) {
 
 	router.route('/v2/users/all/:userId')
 		.get(users.getAllUsersWithAvailability);
-	router.route('/v2/us/users/all/:userId')
+	router.route('/us/v2/users/all/:userId')
 		.get(users.getAllUsersWithAvailability);
 
 	router.route('/v2/opponents/all/:userId')
 		.get(users.getAllUsersWithChallengeAvailability);
-	router.route('/v2/us/opponents/all/:userId')
+	router.route('/us/v2/opponents/all/:userId')
 		.get(users.getAllUsersWithChallengeAvailability);
 };

@@ -120,8 +120,7 @@ exports.getPickableFixtureData = function(req, res) {
                     
                     week_found = 0;
                     league.fixture_info.forEach(function(item) {
-                        //console.log(JSON.stringify(item));
-                        //console.log("next count");
+                        
                         if(week_found == 0) {
                             console.log("week_no="+item.week_no);
                             console.log("start=" + item.start_date);
