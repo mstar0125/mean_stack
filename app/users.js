@@ -235,8 +235,8 @@ exports.getAllUsersWithChallengeAvailability = function(req, res) {
 
             var allUsers = [];
 
-            var query = {$or:[{fromID:req.params.userId}, {toID:req.params.userId}], $or:[{status:0}, {status:1}]};
-            console.log(JSON.stringify(query));
+            var query = {$and:[{$or:[{fromID:req.params.userId}, {toID:req.params.userId}]}, {$or:[{status:0}, {status:1}]}]}
+            console.log(query + ":" + JSON.stringify(query));
 
             Challenge.find(query, function(err, challenges) {
                 if(err) {
