@@ -237,7 +237,7 @@ exports.getAllUsersWithChallengeAvailability = function(req, res) {
 
             var query = {$or:[{fromID:req.params.userId}, {toID:req.params.userId}], $or:[{status:0}, {status:1}]};
             console.log(JSON.stringify(query));
-            
+
             Challenge.find(query, function(err, challenges) {
                 if(err) {
                     res.json({status:'error'});
@@ -249,16 +249,19 @@ exports.getAllUsersWithChallengeAvailability = function(req, res) {
                     if (user._id != req.params.userId) {
 
                         var hasChallenge = false;
+                        var userChallenge = {};
                         challenges.forEach(function(challenge) {
                         
                             if (user._id == challenge.fromID || user._id == challenge.toID ) {
                                 hasChallenge = true;
+                                userChallenge = challenge;
                             }
                         });
 
                         var temp = {
                             'user' : user,
-                            'has_challenge' : hasChallenge
+                            'has_challenge' : hasChallenge,
+                            'challenge' : userChallenge
                         };
                         allUsers.push(temp);
                     }
