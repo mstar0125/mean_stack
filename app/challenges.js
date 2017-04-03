@@ -128,17 +128,26 @@ exports.postRequest = function(req, res) {
             };
             // res.json(newResult);
 
-            var payload = {
-                'type'       : 'challenge_request',
-                'leagueType' : req.params.leagueType,
-                'duration'   : req.params.duration,
-                'leagueID'   : req.params.leagueID,
-                'from'       : req.params.fromID,
-                'start'      : req.params.start,
-                'challenge_id': new_challenge._id,
-            };
-            send_push_notification(req.params.toID, "Someone challenges you!", payload);
-            res.json({"status": "success"});
+            User.findById(req.params.fromID, function(err, user) {
+                if (err) {
+                    console.log("Error in getting user info");
+                    res.json({status:'error'});
+                }
+                var payload = {
+                    'type'       : 'challenge_request',
+                    'leagueType' : req.params.leagueType,
+                    'duration'   : req.params.duration,
+                    'leagueID'   : req.params.leagueID,
+                    'from'       : req.params.fromID,
+                    'start'      : req.params.start,
+                    'challenge_id': new_challenge._id,
+                    'user_fbid' : user.fbID,
+                    'user_name' : user.name
+                };
+                send_push_notification(req.params.toID, "Someone challenges you!", payload);
+                res.json({"status": "success"});
+            })
+            
         }
     });
 
@@ -167,7 +176,11 @@ exports.acceptRequest = function(req, res) {
                             var payload = {
                                 'type'     :    'challenge_accept',
                                 'to'       :    challenge.toID,
-                                'challenge_id': challenge._id
+                                'challenge_id': challenge._id,
+                                'leagueID': challenge.leagueID,
+                                'leagueType': challenge.leagueType,
+                                'user_fbid' : user.fbID,
+                                'user_name' : user.name
                             };
                             send_push_notification(challenge.fromID, user.name + " accepted your challenge!", payload);
                             
@@ -205,7 +218,9 @@ exports.declineRequest = function(req, res) {
                             var payload = {
                                 'type'     : 'challenge_decline',
                                 'to'       : challenge.toID,
-                                'challenge_id': challenge._id
+                                'challenge_id': challenge._id,
+                                'user_fbid' : user.fbID,
+                                'user_name' : user.name
                             };
                             send_push_notification(challenge.fromID, user.name + " declined your challenge!", payload);
                             res.json({"status":"success"}); 
