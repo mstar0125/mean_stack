@@ -56,7 +56,7 @@ var cronJob = cron.job("0 * * * * *", function(){
                                                                 prize.league_pool.forEach(function(leaguePool) {
                                                                     if(leaguePool.index==league.index) {
                                                                         //console.log("Don't forget to predict " + league.name + " this week for a chance to win $" + leaguePool.pool.toFixed(2));
-                                                                        send_push_notification(userID, "Don't forget to predict " + league.name + " this week for a chance to win $" + leaguePool.pool.toFixed(2), null);
+                                                                        send_push_notification(userID, "Don't forget to predict " + league.name + " this week for a chance to win $" + leaguePool.pool.toFixed(2), null, 0);
                                                                     }
                                                                 });
                                                             }
@@ -413,7 +413,7 @@ exports.getLeagueDataByIndex = function(req, res) {
 //     });    
 // }
 
-function send_push_notification(userId, message, payload) {
+function send_push_notification(userId, message, payload, priority) {
     console.log(userId);    
     User.findOne({_id:userId}, function(err,user) {
         console.log("notification_user: "+JSON.stringify(user));
@@ -428,7 +428,9 @@ function send_push_notification(userId, message, payload) {
                 user_id:   userId,
                 message:   message,
                 payload:   payload,
-                status:    0
+                status:    0,
+                create_date:    new Date(),
+                priority:   priority  
             });
 
             new_notification.save(function(err, data) {
@@ -539,7 +541,7 @@ exports.updateLeagueDataByIndex = function(req, res) {
                                             'leagueType' : 0,
                                             'id' : expectation._id
                                         };
-                                        send_push_notification(expectation.userId, "Results are in for " + league.name + "! See how you did in Week " + expectation.week_no + "!", payload);
+                                        send_push_notification(expectation.userId, "Results are in for " + league.name + "! See how you did in Week " + expectation.week_no + "!", payload, 1);
                                     }
                                 }
 
@@ -693,8 +695,8 @@ exports.updateLeagueDataByIndex = function(req, res) {
                                                                             'other_id' : fromUser
                                                                         };
                                                                     }                                          
-                                                                    send_push_notification(fromUser, message1, payload1);                                                                
-                                                                    send_push_notification(toUser, message2, payload2);
+                                                                    send_push_notification(fromUser, message1, payload1, 0);                                                                
+                                                                    send_push_notification(toUser, message2, payload2), 0;
 
                                                                     challenge.status = 3;
                                                                     challenge.markModified('status');

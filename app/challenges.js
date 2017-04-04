@@ -23,7 +23,9 @@ function send_push_notification(userId, message, payload) {
                 user_id:   userId,
                 message:   message,
                 payload:   payload,
-                status:    0
+                status:    0,
+                create_date:    new Date(),
+                priority:       0
             });
 
             new_notification.save(function(err, data) {

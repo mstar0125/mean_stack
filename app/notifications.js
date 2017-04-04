@@ -5,7 +5,7 @@ var _=require('underscore-node')
 
 exports.getPendingNotifications = function(req, res) {
     console.log(req.params.userId);
-    Notification.find({user_id:req.params.userId, status:0}, function(err, notifications) {
+    Notification.find({user_id:req.params.userId, status:0}).sort({priority: -1}, function(err, notifications) {
         if(err) {
             res.json({status:'error'});
             return;
@@ -20,7 +20,9 @@ exports.saveNotification = function(req, res) {
                 user_id:   req.params.userId,
                 message:     req.params.message,
                 payload:       req.params.payload,
-                status:         req.params.status
+                status:         req.params.status,
+                create_date:    new Date(),
+                priority:         req.params.priority
             });
 
     new_notification.save(function(err, data) {
